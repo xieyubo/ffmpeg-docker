@@ -533,9 +533,9 @@ RUN \
 
 ## Download ffmpeg https://ffmpeg.org/
 RUN  \
-        DIR=/tmp/ffmpeg && mkdir -p ${DIR} && cd ${DIR} && \
-        curl -sLO https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2 && \
-        tar -jx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.bz2 && \
+        DIR=/tmp && cd ${DIR} && \
+        git clone https://github.com/xieyubo/FFmpeg ffmpeg && \
+        cd ffmpeg && git checkout release/${FFMPEG_VERSION} && \
         ./configure     --disable-debug  --disable-doc    --disable-ffplay   --enable-shared --enable-gpl  --extra-libs=-ldl && \
         make ;  make install
 
@@ -615,8 +615,8 @@ RUN \
 
 
 FROM        runtime-base AS release
-LABEL       org.opencontainers.image.authors="julien@rottenberg.info" \
-            org.opencontainers.image.source=https://github.com/jrottenberg/ffmpeg
+LABEL       org.opencontainers.image.authors="xyb@xyb.name" \
+            org.opencontainers.image.source=https://github.com/xieyubo/ffmpeg-docker
 
 ENV         LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
 
