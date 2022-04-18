@@ -7,7 +7,9 @@
 #
 FROM    centos:8 AS base
 
-RUN     dnf -y install libgomp && \
+# Until we move to Rockylinux
+RUN     sed -i '/mirrorlist=/d;s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \
+        dnf -y install libgomp && \
         dnf clean all;
 
 
@@ -15,7 +17,7 @@ FROM        base AS build
 
 WORKDIR     /tmp/workdir
 
-ENV         FFMPEG_VERSION=4.1.8 \
+ENV         FFMPEG_VERSION=4.1.9 \
     AOM_VERSION=v1.0.0 \
     CHROMAPRINT_VERSION=1.5.0 \
     FDKAAC_VERSION=0.1.5 \
